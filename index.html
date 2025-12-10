@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Tech Times - Global Tech Chronicles</title>
+    <meta name="description" content="The authoritative source for breaking technology news, deep-dive features, and expert analysis." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+      
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 120px;
+        background-color: #fcfbf9; /* Slight aged paper tone */
+      }
+
+      body {
+        font-family: 'Libre Baskerville', serif;
+        color: #1a1a1a;
+      }
+      
+      /* Masthead Font */
+      .font-masthead {
+        font-family: 'UnifrakturMaguntia', cursive;
+      }
+
+      /* Headline Font */
+      .font-headline {
+        font-family: 'Cinzel', serif;
+      }
+
+      /* Modern Accents */
+      .font-sans-accent {
+        font-family: 'Inter', sans-serif;
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      @keyframes fade-in-up {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+
+      .animate-fade-in-up {
+        animation: fade-in-up 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+      }
+      
+      /* Newspaper specific utilities */
+      .paper-border {
+        border-bottom: 1px solid #000;
+      }
+      .paper-border-top {
+        border-top: 1px solid #000;
+      }
+      .double-border-bottom {
+        border-bottom: 3px double #000;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
