@@ -15,23 +15,12 @@ const Assistant: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isThinking, setIsThinking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isOpen]);
-  
-  // Auto-resize textarea based on content
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      const scrollHeight = textareaRef.current.scrollHeight;
-      textareaRef.current.style.height = `${scrollHeight}px`;
-    }
-  }, [inputValue]);
-
 
   const handleSend = async () => {
     if (!inputValue.trim()) return;
@@ -98,48 +87,5 @@ const Assistant: React.FC = () => {
                <div className="flex justify-start">
                  <div className="bg-gray-100 p-4 flex gap-1.5 items-center rounded-2xl">
                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                 </div>
-               </div>
-            )}
-          </div>
-          
-          {/* Input Area */}
-          <div className="p-4 bg-white border-t border-gray-200">
-            <div className="relative">
-              <textarea
-                ref={textareaRef}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask about a story or topic..."
-                className="w-full bg-gray-100 rounded-xl py-3 pl-4 pr-12 text-sm resize-none border border-transparent focus:border-black focus:ring-0 outline-none transition-colors overflow-y-hidden"
-                rows={1}
-                disabled={isThinking}
-              />
-              <button onClick={handleSend} disabled={isThinking || !inputValue.trim()} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black rounded-lg text-white disabled:opacity-50 transition-all hover:scale-105 active:scale-95">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Toggle Button */}
-      <button 
-        onClick={() => setIsOpen(!isOpen)} 
-        className="w-16 h-16 bg-black text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform"
-        aria-label="Open News Desk Assistant"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a3.375 3.375 0 00-2.672-2.672L11.25 18l1.938-.648a3.375 3.375 0 002.672-2.672L16.25 13l.648 1.938a3.375 3.375 0 002.672 2.672L21 18l-1.938.648a3.375 3.375 0 00-2.672 2.672z" />
-        </svg>
-      </button>
-    </div>
-  );
-};
-
-export default Assistant;
+                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-75"></div>
+                   <div className="w-2 h-2 bg-gray-400 rounded-full animate

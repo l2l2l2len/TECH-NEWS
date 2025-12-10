@@ -1,5 +1,4 @@
 
-
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -9,8 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { BRAND_NAME } from '../constants';
 
 interface NavbarProps {
-  // Fix: Updated event type to allow both anchor and button elements to use this handler.
-  onNavClick: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, targetId: string) => void;
+  onNavClick: (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => void;
   onCategoryClick: (category: string) => void;
   cartCount: number;
   onOpenCart: () => void;

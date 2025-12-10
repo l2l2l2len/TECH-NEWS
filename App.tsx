@@ -1,5 +1,4 @@
 
-
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -108,8 +107,7 @@ const App: React.FC = () => {
 
   // --- Actions ---
 
-  // Fix: Updated event type to allow both anchor and button elements to call this handler.
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, targetId: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     if (targetId === 'submit') {
       setViewState({ type: 'submit' });
