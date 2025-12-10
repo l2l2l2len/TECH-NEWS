@@ -6,6 +6,7 @@
 
 import { GoogleGenAI } from "@google/genai";
 import { PAPERS } from '../constants';
+import { ChatMessage } from "../types";
 
 const getSystemInstruction = () => {
   const paperContext = PAPERS.map(p => 
@@ -24,7 +25,7 @@ const getSystemInstruction = () => {
 };
 
 // Use export to expose functionality
-export const sendMessageToGemini = async (history: {role: string, text: string}[], newMessage: string): Promise<string> => {
+export const sendMessageToGemini = async (history: Omit<ChatMessage, 'timestamp'>[]): Promise<string> => {
   try {
     // API key check. Direct access of process.env.API_KEY is preferred.
     if (!process.env.API_KEY) {
@@ -37,13 +38,10 @@ export const sendMessageToGemini = async (history: {role: string, text: string}[
     // Call generateContent via ai.models
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: [
-        ...history.map(h => ({
-          role: h.role === 'model' ? 'model' : 'user',
-          parts: [{ text: h.text }]
-        })),
-        { role: 'user', parts: [{ text: newMessage }] }
-      ],
+      contents: history.map(h => ({
+        role: h.role,
+        parts: [{ text: h.text }]
+      })),
       config: {
         systemInstruction: getSystemInstruction(),
       }

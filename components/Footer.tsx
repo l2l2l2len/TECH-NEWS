@@ -1,4 +1,5 @@
 
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -7,7 +8,8 @@
 import React, { useState } from 'react';
 
 interface FooterProps {
-  onLinkClick: (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => void;
+  // Fix: Updated event type to allow both anchor and button elements to use this handler.
+  onLinkClick: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, targetId: string) => void;
 }
 
 const Footer: React.FC<FooterProps> = ({ onLinkClick }) => {

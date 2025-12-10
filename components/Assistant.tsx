@@ -10,29 +10,41 @@ import { sendMessageToGemini } from '../services/geminiService';
 const Assistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: 'Welcome to Nexus. I am your research assistant. How can I help you explore our archives today?', timestamp: Date.now() }
+    { role: 'model', text: 'Welcome to The Tech Times. As the Executive Editor, how can I assist your research today?', timestamp: Date.now() }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isThinking, setIsThinking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isOpen]);
+  
+  // Auto-resize textarea based on content
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = `${scrollHeight}px`;
+    }
+  }, [inputValue]);
+
 
   const handleSend = async () => {
     if (!inputValue.trim()) return;
 
     const userMsg: ChatMessage = { role: 'user', text: inputValue, timestamp: Date.now() };
-    setMessages(prev => [...prev, userMsg]);
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setInputValue('');
     setIsThinking(true);
 
     try {
-      const history = messages.map(m => ({ role: m.role, text: m.text }));
-      const responseText = await sendMessageToGemini(history, userMsg.text);
+      const historyForApi = updatedMessages.map(({ role, text }) => ({ role, text }));
+      const responseText = await sendMessageToGemini(historyForApi);
       
       const aiMsg: ChatMessage = { role: 'model', text: responseText, timestamp: Date.now() };
       setMessages(prev => [...prev, aiMsg]);
@@ -51,31 +63,31 @@ const Assistant: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end font-sans">
+    <div className="fixed bottom-8 right-8 z-[9999] flex flex-col items-end font-sans">
       {isOpen && (
-        <div className="bg-[#F5F2EB] rounded-none shadow-2xl shadow-[#2C2A26]/10 w-[90vw] sm:w-[380px] h-[550px] mb-6 flex flex-col overflow-hidden border border-[#D6D1C7] animate-slide-up-fade">
+        <div className="bg-white rounded-xl w-[90vw] sm:w-[380px] h-[550px] mb-4 flex flex-col overflow-hidden border border-gray-200 shadow-2xl animate-fade-in-up">
           {/* Header */}
-          <div className="bg-[#EBE7DE] p-5 border-b border-[#D6D1C7] flex justify-between items-center">
+          <div className="bg-gray-50 p-4 border-b border-gray-200 flex justify-between items-center">
             <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-[#2C2A26] rounded-full animate-pulse"></div>
-                <span className="font-serif italic text-[#2C2A26] text-lg">Nexus Assistant</span>
+                <div className="w-2.5 h-2.5 bg-black rounded-full"></div>
+                <span className="font-headline text-black text-lg font-bold">News Desk Assistant</span>
             </div>
-            <button onClick={() => setIsOpen(false)} className="text-[#A8A29E] hover:text-[#2C2A26] transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
+            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-black transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
           {/* Chat Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-[#F5F2EB]" ref={scrollRef}>
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-white" ref={scrollRef}>
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div 
-                  className={`max-w-[85%] p-5 text-sm leading-relaxed ${
+                  className={`max-w-[85%] p-4 text-sm leading-relaxed rounded-2xl ${
                     msg.role === 'user' 
-                      ? 'bg-[#2C2A26] text-[#F5F2EB]' 
-                      : 'bg-white border border-[#EBE7DE] text-[#5D5A53] shadow-sm'
+                      ? 'bg-black text-white' 
+                      : 'bg-gray-100 text-black'
                   }`}
                 >
                   {msg.text}
@@ -84,33 +96,31 @@ const Assistant: React.FC = () => {
             ))}
             {isThinking && (
                <div className="flex justify-start">
-                 <div className="bg-white border border-[#EBE7DE] p-5 flex gap-1 items-center shadow-sm">
-                   <div className="w-1.5 h-1.5 bg-[#A8A29E] rounded-full animate-bounce"></div>
-                   <div className="w-1.5 h-1.5 bg-[#A8A29E] rounded-full animate-bounce delay-75"></div>
-                   <div className="w-1.5 h-1.5 bg-[#A8A29E] rounded-full animate-bounce delay-150"></div>
+                 <div className="bg-gray-100 p-4 flex gap-1.5 items-center rounded-2xl">
+                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                  </div>
                </div>
             )}
           </div>
-
+          
           {/* Input Area */}
-          <div className="p-5 bg-[#F5F2EB] border-t border-[#D6D1C7]">
-            <div className="flex gap-2 relative">
-              <input 
-                type="text" 
+          <div className="p-4 bg-white border-t border-gray-200">
+            <div className="relative">
+              <textarea
+                ref={textareaRef}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyPress}
-                placeholder="Ask research questions..." 
-                className="flex-1 bg-white border border-[#D6D1C7] focus:border-[#2C2A26] px-4 py-3 text-sm outline-none transition-colors placeholder-[#A8A29E] text-[#2C2A26]"
+                onKeyPress={handleKeyPress}
+                placeholder="Ask about a story or topic..."
+                className="w-full bg-gray-100 rounded-xl py-3 pl-4 pr-12 text-sm resize-none border border-transparent focus:border-black focus:ring-0 outline-none transition-colors overflow-y-hidden"
+                rows={1}
+                disabled={isThinking}
               />
-              <button 
-                onClick={handleSend}
-                disabled={!inputValue.trim() || isThinking}
-                className="bg-[#2C2A26] text-[#F5F2EB] px-4 rounded-full hover:bg-[#444] transition-colors disabled:opacity-50"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              <button onClick={handleSend} disabled={isThinking || !inputValue.trim()} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black rounded-lg text-white disabled:opacity-50 transition-all hover:scale-105 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
                 </svg>
               </button>
             </div>
@@ -118,17 +128,15 @@ const Assistant: React.FC = () => {
         </div>
       )}
 
+      {/* Toggle Button */}
       <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="bg-[#2C2A26] text-[#F5F2EB] w-14 h-14 flex items-center justify-center rounded-full shadow-xl hover:scale-105 transition-all duration-500 z-50"
+        onClick={() => setIsOpen(!isOpen)} 
+        className="w-16 h-16 bg-black text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform"
+        aria-label="Open News Desk Assistant"
       >
-        {isOpen ? (
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-             </svg>
-        ) : (
-            <span className="font-serif italic text-lg">Ai</span>
-        )}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a3.375 3.375 0 00-2.672-2.672L11.25 18l1.938-.648a3.375 3.375 0 002.672-2.672L16.25 13l.648 1.938a3.375 3.375 0 002.672 2.672L21 18l-1.938.648a3.375 3.375 0 00-2.672 2.672z" />
+        </svg>
       </button>
     </div>
   );
