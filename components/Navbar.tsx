@@ -7,13 +7,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BRAND_NAME } from '../constants';
 
-// FAQ preview items to show in the menu
-const faqPreviewItems = [
-  { question: 'What is The Tech Times?', answer: 'A free, open-access technology news platform covering AI, cybersecurity, markets, gadgets, and more.' },
-  { question: 'Do I need an account?', answer: 'No! Everything is free and open. No registration required.' },
-  { question: 'How do I save articles?', answer: 'Click the bookmark icon on any article card or use "Save for Later" button.' },
-];
-
 interface NavbarProps {
   onNavClick: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, targetId: string) => void;
   onCategoryClick: (category: string) => void;
@@ -25,7 +18,6 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onNavClick, onCategoryClick, cartCount, onOpenCart, activeCategory }) => {
   const [currentDate, setCurrentDate] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isFaqExpanded, setIsFaqExpanded] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -41,7 +33,6 @@ const Navbar: React.FC<NavbarProps> = ({ onNavClick, onCategoryClick, cartCount,
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
           setIsMobileMenuOpen(false);
-          setIsFaqExpanded(false);
           menuButtonRef.current?.focus();
         }
       };
@@ -76,10 +67,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavClick, onCategoryClick, cartCount,
       <div className="w-full flex md:hidden justify-between items-center mb-4">
         <button
           ref={menuButtonRef}
-          onClick={() => {
-            if (isMobileMenuOpen) setIsFaqExpanded(false);
-            setIsMobileMenuOpen(!isMobileMenuOpen);
-          }}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-menu"
@@ -151,7 +139,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavClick, onCategoryClick, cartCount,
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/30 z-[49] md:hidden"
-          onClick={() => { setIsMobileMenuOpen(false); setIsFaqExpanded(false); }}
+          onClick={() => setIsMobileMenuOpen(false)}
           aria-hidden="true"
         />
       )}
@@ -207,46 +195,14 @@ const Navbar: React.FC<NavbarProps> = ({ onNavClick, onCategoryClick, cartCount,
              >
                About Us
              </button>
-             {/* Help & FAQ Expandable Section */}
-             <div className="border-t border-gray-200 mt-2">
-               <button
-                 role="menuitem"
-                 tabIndex={isMobileMenuOpen ? 0 : -1}
-                 onClick={() => setIsFaqExpanded(!isFaqExpanded)}
-                 className="w-full text-left font-serif italic text-base min-h-[48px] px-4 flex items-center justify-between hover:bg-gray-100"
-                 aria-expanded={isFaqExpanded}
-               >
-                 <span>Help & FAQ</span>
-                 <svg
-                   xmlns="http://www.w3.org/2000/svg"
-                   fill="none"
-                   viewBox="0 0 24 24"
-                   strokeWidth={1.5}
-                   stroke="currentColor"
-                   className={`w-4 h-4 transition-transform duration-200 ${isFaqExpanded ? 'rotate-180' : ''}`}
-                 >
-                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                 </svg>
-               </button>
-
-               {/* FAQ Preview/Expanded Content */}
-               <div className={`overflow-hidden transition-all duration-300 ${isFaqExpanded ? 'max-h-[500px]' : 'max-h-0'}`}>
-                 <div className="px-4 py-2 space-y-3 bg-gray-50">
-                   {faqPreviewItems.map((item, index) => (
-                     <div key={index} className="border-l-2 border-gray-300 pl-3 py-1">
-                       <p className="font-serif text-sm font-medium text-gray-800">{item.question}</p>
-                       <p className="font-serif text-xs text-gray-600 mt-1">{item.answer}</p>
-                     </div>
-                   ))}
-                   <button
-                     onClick={(e) => { onNavClick(e, 'faq'); setIsMobileMenuOpen(false); setIsFaqExpanded(false); }}
-                     className="w-full text-center font-sans-accent text-xs font-bold uppercase tracking-wider text-black py-2 mt-2 border border-black hover:bg-black hover:text-white transition-colors"
-                   >
-                     View All FAQ →
-                   </button>
-                 </div>
-               </div>
-             </div>
+             <button
+               role="menuitem"
+               tabIndex={isMobileMenuOpen ? 0 : -1}
+               onClick={(e) => { onNavClick(e, 'faq'); setIsMobileMenuOpen(false); }}
+               className="w-full text-left font-serif italic text-base min-h-[48px] px-4 flex items-center hover:bg-gray-100"
+             >
+               Help & FAQ
+             </button>
           </div>
       </div>
 
