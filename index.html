@@ -2,24 +2,94 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Tech Times - Global Tech Chronicles</title>
-    <meta name="description" content="The authoritative source for breaking technology news, deep-dive features, and expert analysis." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary Meta Tags -->
+    <title>The Tech Times - Global Technology News & Analysis</title>
+    <meta name="title" content="The Tech Times - Global Technology News & Analysis" />
+    <meta name="description" content="The authoritative source for breaking technology news, AI developments, cybersecurity updates, market analysis, and expert insights. Free, open-access tech journalism." />
+    <meta name="keywords" content="technology news, AI news, artificial intelligence, tech analysis, cybersecurity, gadgets, tech markets, Silicon Valley, startup news, tech industry" />
+    <meta name="author" content="The Tech Times Media Group" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://thetechtimes.com/" />
+    <meta property="og:title" content="The Tech Times - Global Technology News & Analysis" />
+    <meta property="og:description" content="The authoritative source for breaking technology news, AI developments, and expert analysis. Free, open-access tech journalism with no login required." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200" />
+    <meta property="og:site_name" content="The Tech Times" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://thetechtimes.com/" />
+    <meta property="twitter:title" content="The Tech Times - Global Technology News & Analysis" />
+    <meta property="twitter:description" content="The authoritative source for breaking technology news, AI developments, and expert analysis. Free, open-access tech journalism." />
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://thetechtimes.com/" />
+
+    <!-- Theme and PWA -->
+    <meta name="theme-color" content="#fcfbf9" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Tech Times" />
+
+    <!-- Favicon (using data URI for simplicity - replace with actual favicon in production) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>" />
+
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsMediaOrganization",
+      "name": "The Tech Times",
+      "url": "https://thetechtimes.com",
+      "description": "The authoritative source for breaking technology news and deep-dive features.",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://thetechtimes.com/logo.png"
+      },
+      "sameAs": [],
+      "foundingDate": "2025",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "New York City, NY, USA"
+      }
+    }
+    </script>
+
     <style>
       @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
-      
+
       html {
         scroll-behavior: smooth;
         scroll-padding-top: 120px;
-        background-color: #fcfbf9; /* Slight aged paper tone */
+        background-color: #fcfbf9;
+        -webkit-text-size-adjust: 100%;
       }
 
       body {
         font-family: 'Libre Baskerville', serif;
         color: #1a1a1a;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-      
+
       /* Masthead Font */
       .font-masthead {
         font-family: 'UnifrakturMaguntia', cursive;
@@ -49,9 +119,9 @@
       }
 
       .animate-fade-in-up {
-        animation: fade-in-up 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+        animation: fade-in-up 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
       }
-      
+
       /* Newspaper specific utilities */
       .paper-border {
         border-bottom: 1px solid #000;
@@ -61,6 +131,59 @@
       }
       .double-border-bottom {
         border-bottom: 3px double #000;
+      }
+
+      /* Line clamp for text truncation */
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* Screen reader only class */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+
+      /* Focus visible for accessibility */
+      :focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+      }
+
+      /* Reduce motion for users who prefer it */
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .animate-fade-in-up {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* Print styles */
+      @media print {
+        .no-print {
+          display: none !important;
+        }
       }
     </style>
   <script type="importmap">
