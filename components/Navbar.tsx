@@ -136,74 +136,95 @@ const Navbar: React.FC<NavbarProps> = ({ onNavClick, onCategoryClick, cartCount,
       </div>
 
       {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-[49] md:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-          aria-hidden="true"
-        />
-      )}
+      <div
+        className={`fixed inset-0 bg-black/30 z-[100] md:hidden transition-opacity duration-300 ${
+          isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Side Drawer */}
       <div
         ref={mobileMenuRef}
         id="mobile-menu"
-        className={`md:hidden w-full bg-[#fcfbf9] border-t border-black fixed left-0 shadow-xl py-4 px-4 flex flex-col gap-2 border-b-4 z-[50] transition-transform duration-300 ${
-          isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full pointer-events-none'
+        className={`md:hidden fixed top-0 left-0 h-full w-[280px] max-w-[85vw] bg-[#fcfbf9] shadow-2xl z-[101] transition-transform duration-300 ease-out ${
+          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ top: '100px' }}
         role="menu"
         aria-hidden={!isMobileMenuOpen}
       >
-           {navItems.map((item, index) => (
-              <button
-                key={item}
-                role="menuitem"
-                tabIndex={isMobileMenuOpen ? 0 : -1}
-                className={`text-left font-headline text-base font-bold uppercase tracking-widest min-h-[48px] px-4 flex items-center border-b border-gray-100 ${activeCategory === item ? 'text-black bg-gray-100' : 'text-gray-600'}`}
-                onClick={() => {
-                    onCategoryClick(item);
-                    setIsMobileMenuOpen(false);
-                }}
-                aria-current={activeCategory === item ? 'page' : undefined}
-              >
-                  {item}
-              </button>
+        {/* Menu Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-black">
+          <span className="font-masthead text-xl">Menu</span>
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Close menu"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Navigation Items */}
+        <div className="py-4 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 80px)' }}>
+          {navItems.map((item) => (
+            <button
+              key={item}
+              role="menuitem"
+              tabIndex={isMobileMenuOpen ? 0 : -1}
+              className={`w-full text-left font-headline text-sm font-bold uppercase tracking-widest min-h-[52px] px-6 flex items-center border-b border-gray-100 transition-colors ${
+                activeCategory === item ? 'text-black bg-gray-50' : 'text-gray-600 hover:bg-gray-50'
+              }`}
+              onClick={() => {
+                onCategoryClick(item);
+                setIsMobileMenuOpen(false);
+              }}
+              aria-current={activeCategory === item ? 'page' : undefined}
+            >
+              {item}
+            </button>
           ))}
-          <div className="border-t border-gray-300 pt-4 mt-2 space-y-2">
-             <button
-               role="menuitem"
-               tabIndex={isMobileMenuOpen ? 0 : -1}
-               onClick={(e) => { onNavClick(e, 'submit'); setIsMobileMenuOpen(false); }}
-               className="w-full text-left font-serif italic text-base min-h-[48px] px-4 flex items-center hover:bg-gray-100"
-             >
-               Submit a Tip
-             </button>
-             <button
-               role="menuitem"
-               tabIndex={isMobileMenuOpen ? 0 : -1}
-               onClick={() => { onOpenCart(); setIsMobileMenuOpen(false); }}
-               className="w-full text-left font-serif italic text-base min-h-[48px] px-4 flex items-center hover:bg-gray-100"
-             >
-               Saved Articles ({cartCount})
-             </button>
-             <button
-               role="menuitem"
-               tabIndex={isMobileMenuOpen ? 0 : -1}
-               onClick={(e) => { onNavClick(e, 'about'); setIsMobileMenuOpen(false); }}
-               className="w-full text-left font-serif italic text-base min-h-[48px] px-4 flex items-center hover:bg-gray-100"
-             >
-               About Us
-             </button>
-             <button
-               role="menuitem"
-               tabIndex={isMobileMenuOpen ? 0 : -1}
-               onClick={(e) => { onNavClick(e, 'faq'); setIsMobileMenuOpen(false); }}
-               className="w-full text-left font-serif italic text-base min-h-[48px] px-4 flex items-center hover:bg-gray-100"
-             >
-               Help & FAQ
-             </button>
-          </div>
+
+          {/* Divider */}
+          <div className="my-4 mx-6 border-t border-gray-300" />
+
+          {/* Secondary Links */}
+          <button
+            role="menuitem"
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+            onClick={(e) => { onNavClick(e, 'submit'); setIsMobileMenuOpen(false); }}
+            className="w-full text-left font-serif italic text-base min-h-[48px] px-6 flex items-center hover:bg-gray-50 text-gray-700"
+          >
+            Submit a Tip
+          </button>
+          <button
+            role="menuitem"
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+            onClick={() => { onOpenCart(); setIsMobileMenuOpen(false); }}
+            className="w-full text-left font-serif italic text-base min-h-[48px] px-6 flex items-center hover:bg-gray-50 text-gray-700"
+          >
+            Saved Articles ({cartCount})
+          </button>
+          <button
+            role="menuitem"
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+            onClick={(e) => { onNavClick(e, 'about'); setIsMobileMenuOpen(false); }}
+            className="w-full text-left font-serif italic text-base min-h-[48px] px-6 flex items-center hover:bg-gray-50 text-gray-700"
+          >
+            About Us
+          </button>
+          <button
+            role="menuitem"
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+            onClick={(e) => { onNavClick(e, 'faq'); setIsMobileMenuOpen(false); }}
+            className="w-full text-left font-serif italic text-base min-h-[48px] px-6 flex items-center hover:bg-gray-50 text-gray-700"
+          >
+            Help & FAQ
+          </button>
+        </div>
       </div>
 
       {/* Floating Actions (Desktop) */}
